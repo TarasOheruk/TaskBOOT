@@ -12,12 +12,14 @@ import java.util.List;
 @Service
 public class UserService {
 
-
     private List<User> userList;
 
     @Autowired
     public UserService(List<User> userList) {
         this.userList = userList;
+    }
+    public void saveUser(User user) {
+        userList.add(user);
     }
     public User getUserById(int userId) {
 
@@ -26,6 +28,7 @@ public class UserService {
         }
         return null;
     }
+
     public void deleteUser(int userId) {
         if (userId >= 0 && userId < userList.size()) {
             userList.remove(userId);
@@ -45,5 +48,14 @@ public class UserService {
         LocalDate currentDate = LocalDate.now();
         return Period.between(birthDate, currentDate).getYears();
     }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
 
 }

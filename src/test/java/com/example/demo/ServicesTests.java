@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -16,13 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ServicesTests {
 
-    @MockBean
+    @Autowired
     UserService userService;
 
     @InjectMocks
@@ -36,6 +34,37 @@ public class ServicesTests {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
+    @Test
+    public void testDeleteUserById()  {
+        User user = new User();
+        user.setEmail("user@example.com");
+        user.setLastName("Jones");
+        user.setFirstName("John");
+        user.setBirthDate(LocalDate.of(1990, Month.JANUARY, 1));
+
+        userService.saveUser(user);
+
+        userService.deleteUser(0);
+
+        assertEquals(null, userService.getUserById(0));
+
+    }
+
+    @Test
+    public void testSaveUser() {
+        User user = new User();
+        user.setEmail("user@example.com");
+        user.setLastName("Jones");
+        user.setFirstName("John");
+        user.setBirthDate(LocalDate.of(1990, Month.JANUARY, 1));
+
+        userService.saveUser(user);  // Збереження користувача в реальному сервісі
+
+        // Тепер ви можете перевірити, чи користувач збережений правильно
+        User savedUser = userService.getUserList().get(0);
+
+        assertEquals(user, savedUser);
+    }
     @Test
     public void testCalculateAge() {
         List<User> userList = new ArrayList<>();
@@ -54,32 +83,15 @@ public class ServicesTests {
         user.setFirstName("John");
         user.setBirthDate(LocalDate.of(1990, Month.JANUARY, 1));
 
-        when(userService.getUserById(1)).thenReturn(user);
+        userService.saveUser(user);
 
-        assertEquals("user@example.com", userService.getUserById(1).getEmail());
-        assertEquals("Jones", userService.getUserById(1).getLastName());
-        assertEquals("John", userService.getUserById(1).getFirstName());
-        assertEquals(LocalDate.of(1990, Month.JANUARY, 1), userService.getUserById(1).getBirthDate());
-
-    }
-
-    @Test
-    public void testDeleteUserById()  {
-        User user = new User();
-        user.setEmail("user@example.com");
-        user.setLastName("Jones");
-        user.setFirstName("John");
-        user.setBirthDate(LocalDate.of(1990, Month.JANUARY, 1));
-
-        when(userService.getUserById(1)).thenReturn(user);
-
-        userService.deleteUser(1);
-
-        when(userService.getUserById(1)).thenReturn(null);
-
-        assertEquals(null, userService.getUserById(1));
+        assertEquals("user@example.com", userService.getUserById(0).getEmail());
+        assertEquals("Jones", userService.getUserById(0).getLastName());
+        assertEquals("John", userService.getUserById(0).getFirstName());
+        assertEquals(LocalDate.of(1990, Month.JANUARY, 1), userService.getUserById(0).getBirthDate());
 
     }
+
 
     @Test
     public void testGetUsersByBirthDateRange(){
