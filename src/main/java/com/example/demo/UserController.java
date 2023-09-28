@@ -19,14 +19,12 @@ public class UserController {
     @Value("${app.minimumAge}")
     private int minimumAge;
 
-    private List<User> userList = new ArrayList<>();
-
     @PostMapping("/create")
     public ResponseEntity<String> createUser(@RequestBody @Valid User user) {
         int age = userService.calculateAge(user.getBirthDate());
         try {
             if (age >= minimumAge) {
-                userList.add(user);
+                userService.saveUser(user);
                 return ResponseEntity.ok("User created successfully");
             } else {
                 return ResponseEntity.badRequest().body("User must be at least " + minimumAge + " years old");
