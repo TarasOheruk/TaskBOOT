@@ -21,7 +21,6 @@ public class UserController {
 
     private List<User> userList = new ArrayList<>();
 
-    // Create user
     @PostMapping("/create")
     public ResponseEntity<String> createUser(@RequestBody @Valid User user) {
         int age = userService.calculateAge(user.getBirthDate());
@@ -40,7 +39,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<String> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+    public ResponseEntity<String> updateUser(@PathVariable int userId, @RequestBody User updatedUser) {
         try {
             User existingUser = userService.getUserById(userId);
 
@@ -79,7 +78,7 @@ public class UserController {
 
     }
     @PutMapping("/{userId}")
-    public ResponseEntity<String> updateAllUserFields(@PathVariable Long userId, @RequestBody User updatedUser) {
+    public ResponseEntity<String> updateAllUserFields(@PathVariable int userId, @RequestBody User updatedUser) {
         try {
             User existingUser = userService.getUserById(userId);
 
@@ -101,7 +100,7 @@ public class UserController {
 
     }
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable int userId) {
         try {
             User userToDelete = userService.getUserById(userId);
             if (userToDelete == null) {

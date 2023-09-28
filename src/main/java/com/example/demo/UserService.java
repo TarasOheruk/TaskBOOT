@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -10,24 +12,23 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private List<User> userList; // Ваш список користувачів
 
-    // Конструктор, що приймає список користувачів
+    private List<User> userList;
+
+    @Autowired
     public UserService(List<User> userList) {
         this.userList = userList;
     }
+    public User getUserById(int userId) {
 
-    // Метод для отримання користувача за ідентифікатором
-    public User getUserById(Long userId) {
-        int index = userId.intValue(); // Перетворення Long в int (індекс списку)
-        if (index >= 0 && index < userList.size()) {
-            return userList.get(index);
+        if (userId >= 0 && userId < userList.size()) {
+            return userList.get(userId);
         }
-        return null; // Користувач не знайдений
+        return null;
     }
-    public void deleteUser(Long index) {
-        if (index >= 0 && index < userList.size()) {
-            userList.remove(index);
+    public void deleteUser(int userId) {
+        if (userId >= 0 && userId < userList.size()) {
+            userList.remove(userId);
         }
     }
     public List<User> getUsersByBirthDateRange(LocalDate fromDate, LocalDate toDate) {

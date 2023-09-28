@@ -27,8 +27,6 @@ public class User {
     @Pattern(regexp="^(\\d{10}|\\(\\d{3}\\)\\s\\d{3}-\\d{4}|\\(\\d{3}\\)\\d{3}-\\d{4}|\\(\\d{3}\\)-\\d{3}-\\d{4})?$")
     private String phoneNumber;
 
-    // Геттери та сеттери (необхідні для доступу до полів)
-
     public String getEmail() {
         return email;
     }
